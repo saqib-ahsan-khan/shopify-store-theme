@@ -1,0 +1,105 @@
+{% schema %}
+{
+  "name": "Products Grid",
+  "settings": [
+    {
+      "type": "select",
+      "id": "products_per_page",
+      "label": "Products Per Page",
+      "options": [
+        { "value": "12", "label": "12" },
+        { "value": "24", "label": "24" },
+        { "value": "36", "label": "36" }
+      ],
+      "default": "12"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="collection-header">
+  <h1>{{ collection.title }}</h1>
+  {% if collection.description %}
+    <div class="collection-description">{{ collection.description }}</div>
+  {% endif %}
+</div>
+
+<div class="products-container">
+  {% if collection.products_count > 0 %}
+    <div class="products-grid">
+      {% paginate collection.products by section.settings.products_per_page %}
+        {% for product in collection.products %}
+          {% include 'product-card' %}
+        {% endfor %}
+      {% endpaginate %}
+    </div>
+    
+    <div class="pagination">
+      {% if paginate.previous %}
+        <a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>
+      {% endif %}
+      
+      <span class="page-numbers">
+        Page {{ paginate.current_page }} of {{ paginate.pages }}
+      </span>
+      
+      {% if paginate.next %}
+        <a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p class="no-products">No products found in this collection.</p>
+  {% endif %}
+</div>
+
+<style>
+  .collection-header {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .collection-description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+  
+  .products-container {
+    min-height: 400px;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+  
+  .page-numbers {
+    color: #666;
+    font-weight: 500;
+  }
+  
+  .no-products {
+    text-align: center;
+    padding: 3rem;
+    color: #999;
+  }
+  
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+  }
+</style>

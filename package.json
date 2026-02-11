@@ -1,0 +1,23 @@
+{
+  "name": "shopify-premium-sofas-theme",
+  "version": "1.0.0",
+  "description": "A custom Shopify theme for Premium Sofas Co. - A furniture sofa e-commerce store",
+  "author": "Your Name",
+  "license": "MIT",
+  "scripts": {
+    "start": "shopify theme dev",
+    "build": "shopify theme build",
+    "push": "shopify theme push",
+    "share": "shopify theme share"
+  },
+  "devDependencies": {
+    "shopify-cli": "^3.0.0"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "furniture",
+    "sofas",
+    "e-commerce"
+  ]
+}

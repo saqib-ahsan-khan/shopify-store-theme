@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <title>{% if page_title %}{{ page_title }} - {% endif %}{{ shop.name }}</title>
+  
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | strip_html | truncatewords: 20 }}">
+  {% endif %}
+
+  {{ content_for_header }}
+  
+  <link rel="stylesheet" href="{{ 'theme.css' | asset_url }}">
+  <link rel="stylesheet" href="{{ 'responsive.css' | asset_url }}">
+  
+  <script src="{{ 'jquery.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</head>
+<body>
+  {% section 'header' %}
+  
+  <main class="main-content">
+    {{ content_for_layout }}
+  </main>
+  
+  {% section 'footer' %}
+  
+  <script>
+    var Shopify = Shopify || {};
+    Shopify.money_format = "{{ shop.money_format }}";
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+{% schema %}
+{
+  "name": "Filter & Sort",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show Filters",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show Sort Options",
+      "default": true
+    }
+  ]
+}
+{% endschema %}
+
+<div class="filter-sort-section">
+  {% if section.settings.show_filters %}
+    <div class="filters">
+      <h3>Filters</h3>
+      <form method="get" class="filter-form">
+        <!-- Price Range Filter -->
+        <div class="filter-group">
+          <label>Price Range</label>
+          <input type="range" name="price_min" min="0" max="5000" value="0" class="price-slider">
+          <input type="range" name="price_max" min="0" max="5000" value="5000" class="price-slider">
+          <span id="price-label">$0 - $5000</span>
+        </div>
+        
+        <!-- Color Filter -->
+        <div class="filter-group">
+          <label>Color</label>
+          <div class="color-filters">
+            <label><input type="checkbox" name="color" value="black"> Black</label>
+            <label><input type="checkbox" name="color" value="brown"> Brown</label>
+            <label><input type="checkbox" name="color" value="gray"> Gray</label>
+            <label><input type="checkbox" name="color" value="white"> White</label>
+            <label><input type="checkbox" name="color" value="beige"> Beige</label>
+          </div>
+        </div>
+        
+        <!-- Material Filter -->
+        <div class="filter-group">
+          <label>Material</label>
+          <div class="material-filters">
+            <label><input type="checkbox" name="material" value="leather"> Leather</label>
+            <label><input type="checkbox" name="material" value="fabric"> Fabric</label>
+            <label><input type="checkbox" name="material" value="microfiber"> Microfiber</label>
+            <label><input type="checkbox" name="material" value="linen"> Linen</label>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+      </form>
+    </div>
+  {% endif %}
+  
+  {% if section.settings.show_sort %}
+    <div class="sort-options">
+      <form method="get" class="sort-form">
+        <label for="sort-by">Sort By:</label>
+        <select id="sort-by" name="sort" onchange="this.form.submit();">
+          <option value="featured" selected>Featured</option>
+          <option value="best-selling">Best Selling</option>
+          <option value="price-low-to-high">Price: Low to High</option>
+          <option value="price-high-to-low">Price: High to Low</option>
+          <option value="newest">Newest First</option>
+          <option value="rating">Highest Rated</option>
+        </select>
+      </form>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .filter-sort-section {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .filters {
+    flex: 1;
+  }
+  
+  .filter-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #333;
+  }
+  
+  .color-filters,
+  .material-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .color-filters label,
+  .material-filters label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    cursor: pointer;
+  }
+  
+  .color-filters input,
+  .material-filters input {
+    margin-right: 0.5rem;
+  }
+  
+  .price-slider {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  
+  #price-label {
+    display: block;
+    margin-top: 0.5rem;
+    color: {{ settings.color_primary }};
+    font-weight: 600;
+  }
+  
+  .sort-options {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .sort-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .sort-form select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .filter-sort-section {
+      flex-direction: column;
+    }
+  }
+</style>

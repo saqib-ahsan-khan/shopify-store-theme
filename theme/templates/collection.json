@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "filter-sort": {
+      "type": "filter-sort"
+    },
+    "products-grid": {
+      "type": "products-grid"
+    }
+  },
+  "order": ["filter-sort", "products-grid"]
+}

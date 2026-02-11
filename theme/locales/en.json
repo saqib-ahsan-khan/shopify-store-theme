@@ -1,0 +1,33 @@
+{
+  "en": {
+    "header": {
+      "shop_name": "Premium Sofas Co.",
+      "search_placeholder": "Search for sofas...",
+      "account": "Account",
+      "cart": "Cart"
+    },
+    "footer": {
+      "about_us": "About Us",
+      "quick_links": "Quick Links",
+      "customer_service": "Customer Service",
+      "contact": "Contact",
+      "copyright": "© {{ year }} {{ shop_name }}. All rights reserved."
+    },
+    "products": {
+      "add_to_cart": "Add to Cart",
+      "out_of_stock": "Out of Stock",
+      "in_stock": "In Stock",
+      "sale": "Sale",
+      "quick_view": "Quick View"
+    },
+    "cart": {
+      "empty": "Your cart is empty",
+      "continue_shopping": "Continue Shopping",
+      "view_cart": "View Cart",
+      "checkout": "Checkout",
+      "subtotal": "Subtotal",
+      "shipping": "Shipping",
+      "total": "Total"
+    }
+  }
+}

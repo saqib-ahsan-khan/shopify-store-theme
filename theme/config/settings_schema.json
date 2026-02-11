@@ -1,0 +1,55 @@
+[
+  {
+    "name": "Theme Settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary Color",
+        "default": "#8B4513"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary Color",
+        "default": "#D2691E"
+      },
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body Font",
+        "default": "helvetica_neue_n4_w01-45sf93"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "label": "Heading Font",
+        "default": "georgia_pro_w01_smbd"
+      },
+      {
+        "type": "header",
+        "content": "General"
+      },
+      {
+        "type": "text",
+        "id": "shop_name",
+        "label": "Shop Name",
+        "default": "Premium Sofas Co."
+      },
+      {
+        "type": "richtext",
+        "id": "shop_description",
+        "label": "Shop Description",
+        "default": "<p>Handcrafted luxury sofas and furniture for your home</p>"
+      }
+    ]
+  }
+]

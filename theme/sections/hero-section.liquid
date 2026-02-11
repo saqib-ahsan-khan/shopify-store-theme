@@ -1,0 +1,114 @@
+{% schema %}
+{
+  "name": "Hero Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Title",
+      "default": "Premium Sofas for Your Home"
+    },
+    {
+      "type": "richtext",
+      "id": "hero_subtitle",
+      "label": "Subtitle",
+      "default": "<p>Handcrafted luxury sofas with premium comfort</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="hero-section" 
+  {% if section.settings.hero_image %}
+    style="background-image: url('{{ section.settings.hero_image | image_url: width: 1500 }}');"
+  {% else %}
+    style="background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);"
+  {% endif %}>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">{{ section.settings.hero_title }}</h1>
+    <div class="hero-subtitle">{{ section.settings.hero_subtitle }}</div>
+    {% if section.settings.button_url %}
+      <a href="{{ section.settings.button_url }}" class="btn btn-primary">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+  
+  .btn-primary {
+    background-color: {{ settings.color_primary }};
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: {{ settings.color_secondary }};
+    transform: scale(1.05);
+  }
+</style>

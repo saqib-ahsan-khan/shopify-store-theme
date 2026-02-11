@@ -1,0 +1,271 @@
+{% schema %}
+{
+  "name": "Product Details",
+  "settings": []
+}
+{% endschema %}
+
+<section class="product-details">
+  <div class="container">
+    <div class="product-grid">
+      <div class="product-images">
+        <div class="main-image">
+          {% if product.featured_image %}
+            <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.title }}" id="MainImage">
+          {% endif %}
+        </div>
+        <div class="thumbnail-images">
+          {% for image in product.images %}
+            <img src="{{ image | image_url: width: 80 }}" alt="{{ product.title }}" class="thumbnail" data-image="{{ image | image_url: width: 600 }}">
+          {% endfor %}
+        </div>
+      </div>
+      
+      <div class="product-info">
+        <h1 class="product-title">{{ product.title }}</h1>
+        
+        <div class="product-rating">
+          <div class="stars">
+            {% for i in (1..5) %}
+              <span class="star {% if i <= 4 %}filled{% endif %}">★</span>
+            {% endfor %}
+          </div>
+          <span class="rating-text">(42 reviews)</span>
+        </div>
+        
+        <div class="product-price">
+          <span class="price">{{ product.price | money }}</span>
+          {% if product.compare_at_price %}
+            <span class="original-price">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+        
+        <div class="product-description">
+          {{ product.description }}
+        </div>
+        
+        <form method="post" action="/cart/add" class="product-form">
+          <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+          
+          <div class="product-options">
+            {% for option in product.options %}
+              <div class="option">
+                <label for="Option-{{ forloop.index }}">{{ option }}</label>
+                <select name="options[{{ option }}]" id="Option-{{ forloop.index }}" required>
+                  {% for value in product.options_with_values[forloop.index0].values %}
+                    <option value="{{ value }}">{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            {% endfor %}
+          </div>
+          
+          <div class="quantity-selector">
+            <label for="Quantity">Quantity</label>
+            <input type="number" name="quantity" id="Quantity" value="1" min="1">
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-large">Add to Cart</button>
+        </form>
+        
+        <div class="product-details-tabs">
+          <div class="tab-header">
+            <button class="tab-button active" data-tab="specs">Specifications</button>
+            <button class="tab-button" data-tab="shipping">Shipping Info</button>
+            <button class="tab-button" data-tab="care">Care Instructions</button>
+          </div>
+          
+          <div id="specs" class="tab-content active">
+            <h3>Product Specifications</h3>
+            <ul>
+              <li>Material: Premium Leather/Fabric</li>
+              <li>Dimensions: Customizable</li>
+              <li>Color Options: Multiple</li>
+              <li>Warranty: 5 Years</li>
+            </ul>
+          </div>
+          
+          <div id="shipping" class="tab-content">
+            <h3>Shipping Information</h3>
+            <p>Free shipping on orders over $500. Delivery within 2-4 weeks.</p>
+          </div>
+          
+          <div id="care" class="tab-content">
+            <h3>Care Instructions</h3>
+            <p>Regular vacuuming and spot cleaning recommended. Professional cleaning annually.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-details {
+    padding: 2rem 0;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  
+  .product-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .main-image img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .thumbnail-images {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+  
+  .thumbnail:hover {
+    border-color: {{ settings.color_primary }};
+  }
+  
+  .product-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .stars {
+    color: #ffc107;
+  }
+  
+  .product-price {
+    font-size: 1.5rem;
+    color: {{ settings.color_primary }};
+    margin-bottom: 1rem;
+  }
+  
+  .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 1rem;
+  }
+  
+  .product-options {
+    margin: 1.5rem 0;
+  }
+  
+  .option {
+    margin-bottom: 1rem;
+  }
+  
+  .option select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .quantity-selector {
+    margin-bottom: 1.5rem;
+  }
+  
+  .quantity-selector input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .btn-large {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .product-details-tabs {
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+    padding-top: 2rem;
+  }
+  
+  .tab-header {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: #666;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  
+  .tab-button.active {
+    color: {{ settings.color_primary }};
+    border-bottom-color: {{ settings.color_primary }};
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  @media (max-width: 768px) {
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Tab functionality
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const tabName = this.dataset.tab;
+      
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      
+      this.classList.add('active');
+      document.getElementById(tabName).classList.add('active');
+    });
+  });
+  
+  // Image gallery
+  document.querySelectorAll('.thumbnail').forEach(thumbnail => {
+    thumbnail.addEventListener('click', function() {
+      document.getElementById('MainImage').src = this.dataset.image;
+      document.querySelectorAll('.thumbnail').forEach(t => t.style.borderColor = '#ddd');
+      this.style.borderColor = '{{ settings.color_primary }}';
+    });
+  });
+</script>
