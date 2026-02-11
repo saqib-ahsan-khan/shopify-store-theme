@@ -1,17 +1,17 @@
 {% schema %}
 {
-  "name": "Featured Products",
+  "name": "Sale Section",
   "settings": [
     {
       "type": "text",
       "id": "title",
       "label": "Section Title",
-      "default": "Featured Sofas"
+      "default": "On Sale Now"
     },
     {
       "type": "collection",
-      "id": "collection",
-      "label": "Collection"
+      "id": "sale_collection",
+      "label": "Sale Collection"
     },
     {
       "type": "range",
@@ -25,41 +25,32 @@
 }
 {% endschema %}
 
-<section class="featured-products">
+{% if section.settings.sale_collection %}
+<section class="sale-section">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">{{ section.settings.title }}</h2>
-      {% if section.settings.collection %}
-        <a href="{{ section.settings.collection.url }}" class="view-all-link">View All</a>
-      {% endif %}
+      <a href="{{ section.settings.sale_collection.url }}" class="view-all-link">View All Sale Items</a>
     </div>
     
     <div class="products-grid">
-      {% assign collection_handle = section.settings.collection %}
-      {% if collection_handle != blank %}
-        {% assign selected_collection = collections[collection_handle] %}
-        {% if selected_collection %}
-          {% for product in selected_collection.products limit: section.settings.products_count %}
-            {% render 'product-card', product: product %}
-          {% endfor %}
-        {% else %}
-          {% for product in collections.all.products limit: section.settings.products_count %}
+      {% assign sale_collection_handle = section.settings.sale_collection %}
+      {% if sale_collection_handle != blank %}
+        {% assign sale_collection = collections[sale_collection_handle] %}
+        {% if sale_collection %}
+          {% for product in sale_collection.products limit: section.settings.products_count %}
             {% render 'product-card', product: product %}
           {% endfor %}
         {% endif %}
-      {% else %}
-        {% for product in collections.all.products limit: section.settings.products_count %}
-          {% render 'product-card', product: product %}
-        {% endfor %}
       {% endif %}
     </div>
   </div>
 </section>
 
 <style>
-  .featured-products {
+  .sale-section {
     padding: 4rem 0;
-    background-color: #fafafa;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
   }
   
   .section-header {
@@ -96,7 +87,7 @@
   }
   
   @media (max-width: 768px) {
-    .featured-products {
+    .sale-section {
       padding: 2.5rem 0;
     }
     
@@ -116,3 +107,4 @@
     }
   }
 </style>
+{% endif %}

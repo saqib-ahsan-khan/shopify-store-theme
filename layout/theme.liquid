@@ -19,6 +19,7 @@
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
 </head>
 <body>
+  {% section 'announcement-bar' %}
   {% section 'header' %}
   
   <main class="main-content">
@@ -26,6 +27,7 @@
   </main>
   
   {% section 'footer' %}
+  {% section 'whatsapp-widget' %}
   
   <script>
     var Shopify = Shopify || {};

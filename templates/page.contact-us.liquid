@@ -1,0 +1,181 @@
+<div class="page-template contact-page">
+  <div class="container">
+    <h1 class="page-title">{{ page.title }}</h1>
+    <div class="contact-content">
+      <div class="contact-info">
+        {{ page.content }}
+        
+        <div class="contact-methods">
+          {% if shop.email %}
+            <div class="contact-method">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <div>
+                <h3>Email</h3>
+                <a href="mailto:{{ shop.email }}">{{ shop.email }}</a>
+              </div>
+            </div>
+          {% endif %}
+          
+          {% if shop.phone %}
+            <div class="contact-method">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <div>
+                <h3>Phone</h3>
+                <a href="tel:{{ shop.phone }}">{{ shop.phone }}</a>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      <div class="contact-form-wrapper">
+        {% form 'contact' %}
+          {% if form.posted_successfully? %}
+            <div class="form-success">
+              <p>Thank you for contacting us! We'll get back to you soon.</p>
+            </div>
+          {% endif %}
+          
+          {% if form.errors %}
+            <div class="form-errors">
+              <p>Please correct the following errors:</p>
+              <ul>
+                {% for field in form.errors %}
+                  <li>{{ field }}: {{ form.errors[field] }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          
+          <div class="form-group">
+            <label for="ContactFormName">Name *</label>
+            <input type="text" id="ContactFormName" name="contact[name]" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="ContactFormEmail">Email *</label>
+            <input type="email" id="ContactFormEmail" name="contact[email]" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="ContactFormPhone">Phone</label>
+            <input type="tel" id="ContactFormPhone" name="contact[phone]">
+          </div>
+          
+          <div class="form-group">
+            <label for="ContactFormMessage">Message *</label>
+            <textarea id="ContactFormMessage" name="contact[body]" rows="6" required></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .contact-page {
+    padding: 3rem 0;
+  }
+  
+  .contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+  }
+  
+  .contact-methods {
+    margin-top: 2rem;
+  }
+  
+  .contact-method {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .contact-method svg {
+    color: {{ settings.color_primary }};
+    flex-shrink: 0;
+  }
+  
+  .contact-method h3 {
+    margin: 0 0 0.5rem 0;
+    color: #2c3e50;
+  }
+  
+  .contact-method a {
+    color: {{ settings.color_primary }};
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .contact-method a:hover {
+    text-decoration: underline;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+  }
+  
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: {{ settings.color_primary }};
+  }
+  
+  .form-success {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-errors {
+    background: #ffebee;
+    color: #c62828;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-errors ul {
+    margin: 0.5rem 0 0 1.5rem;
+  }
+  
+  @media (max-width: 968px) {
+    .contact-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>

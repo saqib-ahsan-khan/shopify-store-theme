@@ -1,7 +1,42 @@
 {% schema %}
 {
   "name": "Footer",
-  "settings": []
+  "settings": [
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp Number",
+      "default": "+1234567890",
+      "info": "Include country code (e.g., +44 for UK)"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Title",
+      "default": "Subscribe to Our Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtitle",
+      "label": "Newsletter Subtitle",
+      "default": "Get 10% off your first order"
+    }
+  ]
 }
 {% endschema %}
 
@@ -10,32 +45,77 @@
     <div class="footer-content">
       <div class="footer-section">
         <h3>About Us</h3>
-        <p>{{ settings.shop_description }}</p>
+        <p>{{ settings.shop_description | default: "Premium quality sofas and furniture for your home. We deliver, assemble, and offer cash on collection." }}</p>
+        <div class="social-links">
+          {% if section.settings.facebook_url %}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener" class="social-link facebook" aria-label="Facebook">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.instagram_url %}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener" class="social-link instagram" aria-label="Instagram">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.tiktok_url %}
+            <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener" class="social-link tiktok" aria-label="TikTok">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
       </div>
       
       <div class="footer-section">
         <h3>Quick Links</h3>
         <ul>
-          {% for link in linklists.footer-menu.links %}
-            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-          {% endfor %}
+          <li><a href="/collections/all">All Sofas</a></li>
+          <li><a href="/collections">Collections</a></li>
+          <li><a href="/pages/about-us">About Us</a></li>
+          <li><a href="/pages/contact-us">Contact Us</a></li>
+          <li><a href="/pages/faq">FAQ</a></li>
         </ul>
       </div>
       
       <div class="footer-section">
         <h3>Customer Service</h3>
         <ul>
+          <li><a href="/pages/terms-and-conditions">Terms & Conditions</a></li>
           <li><a href="/policies/refund-policy">Refund Policy</a></li>
           <li><a href="/policies/shipping-policy">Shipping Policy</a></li>
           <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-          <li><a href="/policies/terms-of-service">Terms of Service</a></li>
         </ul>
       </div>
       
       <div class="footer-section">
-        <h3>Contact</h3>
-        <p>Email: {{ shop.email }}</p>
-        <p>Phone: {{ shop.phone }}</p>
+        <h3>Newsletter</h3>
+        <p class="newsletter-title">{{ section.settings.newsletter_title }}</p>
+        <p class="newsletter-subtitle">{{ section.settings.newsletter_subtitle }}</p>
+        <form action="/contact#contact_form" method="post" class="newsletter-form" id="newsletter-form">
+          <input type="hidden" name="form_type" value="customer">
+          <input type="hidden" name="utf8" value="✓">
+          <div class="newsletter-input-group">
+            <input type="email" name="contact[email]" placeholder="Enter your email" required class="newsletter-input">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+          </div>
+        </form>
+        {% if section.settings.whatsapp_number %}
+          <div class="whatsapp-contact" style="margin-top: 1.5rem;">
+            <a href="https://wa.me/{{ section.settings.whatsapp_number | remove: '+' | remove: ' ' | remove: '-' }}" target="_blank" class="whatsapp-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              Chat with us on WhatsApp
+            </a>
+          </div>
+        {% endif %}
       </div>
     </div>
     
@@ -47,22 +127,30 @@
 
 <style>
   .site-footer {
-    background-color: #333;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
     color: #fff;
-    padding: 3rem 0 1rem;
-    margin-top: 3rem;
+    padding: 4rem 0 1.5rem;
+    margin-top: 4rem;
   }
   
   .footer-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 3rem;
+    margin-bottom: 3rem;
   }
   
   .footer-section h3 {
+    margin-bottom: 1.5rem;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  
+  .footer-section p {
+    color: #ccc;
+    line-height: 1.8;
     margin-bottom: 1rem;
-    color: {{ settings.color_primary }};
   }
   
   .footer-section ul {
@@ -71,23 +159,142 @@
   }
   
   .footer-section ul li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   
   .footer-section a {
     color: #ccc;
     text-decoration: none;
     transition: color 0.3s;
+    font-size: 0.95rem;
   }
   
   .footer-section a:hover {
     color: {{ settings.color_primary }};
   }
   
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+  }
+  
+  .social-link:hover {
+    background: {{ settings.color_primary }};
+    transform: translateY(-3px);
+  }
+  
+  .newsletter-title {
+    font-weight: 600;
+    color: #fff !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .newsletter-subtitle {
+    color: {{ settings.color_primary }} !important;
+    font-weight: 500;
+    margin-bottom: 1rem !important;
+  }
+  
+  .newsletter-form {
+    margin-top: 1rem;
+  }
+  
+  .newsletter-input-group {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  
+  .newsletter-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .newsletter-input:focus {
+    outline: none;
+    border-color: {{ settings.color_primary }};
+    background: rgba(255, 255, 255, 0.15);
+  }
+  
+  .newsletter-btn {
+    padding: 0.75rem 1.5rem;
+    background: {{ settings.color_primary }};
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  
+  .newsletter-btn:hover {
+    background: {{ settings.color_secondary }};
+    transform: translateY(-2px);
+  }
+  
+  .whatsapp-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #25d366;
+    color: white;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .whatsapp-link:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+    color: white;
+  }
+  
   .footer-bottom {
     text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid #555;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     color: #999;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    .site-footer {
+      padding: 3rem 0 1rem;
+    }
+    
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .newsletter-input-group {
+      flex-direction: column;
+    }
+    
+    .newsletter-btn {
+      width: 100%;
+    }
   }
 </style>

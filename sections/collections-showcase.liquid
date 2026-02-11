@@ -1,0 +1,129 @@
+{% schema %}
+{
+  "name": "Collections Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop by Category"
+    }
+  ]
+}
+{% endschema %}
+
+<section class="collections-showcase">
+  <div class="container">
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    
+    <div class="collections-grid">
+      {% assign collections_list = collections | sort: 'title' %}
+      {% for collection in collections_list limit: 6 %}
+        {% if collection.products_count > 0 %}
+          <a href="{{ collection.url }}" class="collection-card">
+            {% if collection.featured_image %}
+              <div class="collection-image">
+                <img src="{{ collection.featured_image | image_url: width: 500 }}" alt="{{ collection.title }}" loading="lazy">
+              </div>
+            {% endif %}
+            <div class="collection-info">
+              <h3 class="collection-title">{{ collection.title }}</h3>
+              <p class="collection-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }}</p>
+            </div>
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+    
+    <div class="text-center" style="margin-top: 3rem;">
+      <a href="/collections" class="btn btn-primary">View All Collections</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .collections-showcase {
+    padding: 4rem 0;
+    background-color: #ffffff;
+  }
+  
+  .section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 3rem;
+  }
+  
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .collection-card {
+    text-decoration: none;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    display: block;
+  }
+  
+  .collection-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  .collection-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background: #f8f9fa;
+  }
+  
+  .collection-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .collection-card:hover .collection-image img {
+    transform: scale(1.1);
+  }
+  
+  .collection-info {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .collection-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+  }
+  
+  .collection-count {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .collections-showcase {
+      padding: 2.5rem 0;
+    }
+    
+    .section-title {
+      font-size: 2rem;
+    }
+    
+    .collections-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+</style>

@@ -4,14 +4,8 @@
   "settings": [
     {
       "type": "checkbox",
-      "id": "show_filters",
-      "label": "Show Filters",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sort",
-      "label": "Show Sort Options",
+      "id": "show_product_count",
+      "label": "Show Product Count",
       "default": true
     }
   ]
@@ -19,142 +13,159 @@
 {% endschema %}
 
 <div class="filter-sort-section">
-  {% if section.settings.show_filters %}
-    <div class="filters">
-      <h3>Filters</h3>
-      <form method="get" class="filter-form">
-        <!-- Price Range Filter -->
+  <div class="container">
+    <div class="filter-sort-container">
+      <div class="product-count">
+        {% if section.settings.show_product_count %}
+          <span class="count-text">
+            {% if collection %}
+              {{ collection.products_count }} {{ collection.products_count | pluralize: 'product', 'products' }} in {{ collection.title }}
+            {% else %}
+              {{ collections.all.products_count }} products available
+            {% endif %}
+          </span>
+        {% endif %}
+      </div>
+      
+      <div class="filter-sort-controls">
         <div class="filter-group">
-          <label>Price Range</label>
-          <input type="range" name="price_min" min="0" max="5000" value="0" class="price-slider">
-          <input type="range" name="price_max" min="0" max="5000" value="5000" class="price-slider">
-          <span id="price-label">$0 - $5000</span>
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select" class="sort-select">
+            <option value="manual">Featured</option>
+            <option value="best-selling">Best Selling</option>
+            <option value="title-ascending" {% if collection.sort_by == 'title-ascending' %}selected{% endif %}>Alphabetically, A-Z</option>
+            <option value="title-descending" {% if collection.sort_by == 'title-descending' %}selected{% endif %}>Alphabetically, Z-A</option>
+            <option value="price-ascending" {% if collection.sort_by == 'price-ascending' %}selected{% endif %}>Price, Low to High</option>
+            <option value="price-descending" {% if collection.sort_by == 'price-descending' %}selected{% endif %}>Price, High to Low</option>
+            <option value="created-ascending">Date, Old to New</option>
+            <option value="created-descending">Date, New to Old</option>
+          </select>
         </div>
         
-        <!-- Color Filter -->
         <div class="filter-group">
-          <label>Color</label>
-          <div class="color-filters">
-            <label><input type="checkbox" name="color" value="black"> Black</label>
-            <label><input type="checkbox" name="color" value="brown"> Brown</label>
-            <label><input type="checkbox" name="color" value="gray"> Gray</label>
-            <label><input type="checkbox" name="color" value="white"> White</label>
-            <label><input type="checkbox" name="color" value="beige"> Beige</label>
-          </div>
+          <label for="filter-category">Filter:</label>
+          <select id="filter-category" class="filter-select">
+            <option value="all">All Categories</option>
+            <option value="armchairs">Armchairs</option>
+            <option value="sofa-bed">Sofa Bed</option>
+            <option value="3-seater">3 Seater</option>
+            <option value="2-seaters">2 Seaters</option>
+            <option value="corner-sofas">Corner Sofas</option>
+          </select>
         </div>
-        
-        <!-- Material Filter -->
-        <div class="filter-group">
-          <label>Material</label>
-          <div class="material-filters">
-            <label><input type="checkbox" name="material" value="leather"> Leather</label>
-            <label><input type="checkbox" name="material" value="fabric"> Fabric</label>
-            <label><input type="checkbox" name="material" value="microfiber"> Microfiber</label>
-            <label><input type="checkbox" name="material" value="linen"> Linen</label>
-          </div>
-        </div>
-        
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
-      </form>
+      </div>
     </div>
-  {% endif %}
-  
-  {% if section.settings.show_sort %}
-    <div class="sort-options">
-      <form method="get" class="sort-form">
-        <label for="sort-by">Sort By:</label>
-        <select id="sort-by" name="sort" onchange="this.form.submit();">
-          <option value="featured" selected>Featured</option>
-          <option value="best-selling">Best Selling</option>
-          <option value="price-low-to-high">Price: Low to High</option>
-          <option value="price-high-to-low">Price: High to Low</option>
-          <option value="newest">Newest First</option>
-          <option value="rating">Highest Rated</option>
-        </select>
-      </form>
-    </div>
-  {% endif %}
+  </div>
 </div>
 
 <style>
   .filter-sort-section {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    background-color: #f9f9f9;
-    border-radius: 8px;
+    padding: 1.5rem 0;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e8e8e8;
   }
   
-  .filters {
+  .filter-sort-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  
+  .product-count {
     flex: 1;
+  }
+  
+  .count-text {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1rem;
+  }
+  
+  .filter-sort-controls {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
   }
   
   .filter-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
   
   .filter-group label {
-    display: block;
     font-weight: 600;
-    margin-bottom: 0.75rem;
     color: #333;
+    font-size: 0.95rem;
   }
   
-  .color-filters,
-  .material-filters {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .color-filters label,
-  .material-filters label {
-    display: flex;
-    align-items: center;
-    font-weight: normal;
+  .sort-select,
+  .filter-select {
+    padding: 0.75rem 1.25rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    background: white;
+    font-size: 0.95rem;
     cursor: pointer;
+    transition: all 0.3s;
+    min-width: 200px;
   }
   
-  .color-filters input,
-  .material-filters input {
-    margin-right: 0.5rem;
-  }
-  
-  .price-slider {
-    width: 100%;
-    margin: 0.5rem 0;
-  }
-  
-  #price-label {
-    display: block;
-    margin-top: 0.5rem;
-    color: {{ settings.color_primary }};
-    font-weight: 600;
-  }
-  
-  .sort-options {
-    flex: 1;
-    display: flex;
-    align-items: flex-end;
-  }
-  
-  .sort-form {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-  
-  .sort-form select {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+  .sort-select:focus,
+  .filter-select:focus {
+    outline: none;
+    border-color: {{ settings.color_primary }};
+    box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
   }
   
   @media (max-width: 768px) {
-    .filter-sort-section {
+    .filter-sort-container {
       flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .filter-sort-controls {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .filter-group {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .sort-select,
+    .filter-select {
+      width: 100%;
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sortSelect = document.getElementById('sort-select');
+    const filterSelect = document.getElementById('filter-category');
+    
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        const sortValue = this.value;
+        const url = new URL(window.location);
+        url.searchParams.set('sort_by', sortValue);
+        window.location.href = url.toString();
+      });
+    }
+    
+    if (filterSelect) {
+      filterSelect.addEventListener('change', function() {
+        const filterValue = this.value;
+        if (filterValue === 'all') {
+          window.location.href = '/collections/all';
+        } else {
+          window.location.href = '/collections/' + filterValue;
+        }
+      });
+    }
+  });
+</script>

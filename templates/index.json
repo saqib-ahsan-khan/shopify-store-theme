@@ -5,7 +5,13 @@
     },
     "featured-products": {
       "type": "featured-products"
+    },
+    "sale-section": {
+      "type": "sale-section"
+    },
+    "collections-showcase": {
+      "type": "collections-showcase"
     }
   },
-  "order": ["hero", "featured-products"]
+  "order": ["hero", "featured-products", "sale-section", "collections-showcase"]
 }

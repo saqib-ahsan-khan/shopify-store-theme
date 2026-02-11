@@ -12,6 +12,13 @@
       "id": "shop_name",
       "label": "Shop Name",
       "default": "Premium Sofas Co."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_number",
+      "label": "WhatsApp Number",
+      "default": "+1234567890",
+      "info": "Include country code (e.g., +44 for UK)"
     }
   ]
 }
@@ -20,67 +27,125 @@
 <header class="site-header">
   <div class="container header-container">
     <div class="logo-section">
-      {% if section.settings.logo %}
-        <img src="{{ section.settings.logo | image_url: width: 250 }}" alt="{{ shop.name }}" class="logo">
-      {% else %}
-        <h1 class="shop-name">{{ section.settings.shop_name }}</h1>
-      {% endif %}
+      <a href="/">
+        {% if section.settings.logo %}
+          <img src="{{ section.settings.logo | image_url: width: 250 }}" alt="{{ shop.name }}" class="logo">
+        {% else %}
+          <h1 class="shop-name">{{ section.settings.shop_name }}</h1>
+        {% endif %}
+      </a>
     </div>
     
     <nav class="main-nav">
-      {% for link in linklists.main-menu.links %}
-        <a href="{{ link.url }}" class="nav-link {% if link.active %}active{% endif %}">
-          {{ link.title }}
+      <a href="/" class="nav-link {% if template.name == 'index' %}active{% endif %}">Home</a>
+      
+      <div class="nav-dropdown">
+        <a href="/collections/all" class="nav-link dropdown-trigger {% if template.name == 'collection' or template.name == 'product' %}active{% endif %}">
+          SOFA
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
         </a>
-      {% endfor %}
+        <div class="dropdown-menu">
+          <a href="/collections/armchairs" class="dropdown-item">ARMCHAIRS</a>
+          <a href="/collections/sofa-bed" class="dropdown-item">SOFA BED</a>
+          <a href="/collections/3-seater" class="dropdown-item">3 SEATER</a>
+          <a href="/collections/2-seaters" class="dropdown-item">2 SEATERS</a>
+          <a href="/collections/corner-sofas" class="dropdown-item">CORNER SOFAS</a>
+        </div>
+      </div>
+      
+      <a href="/collections" class="nav-link {% if template.name == 'list-collections' %}active{% endif %}">Collections</a>
+      <a href="/pages/about-us" class="nav-link">About Us</a>
+      <a href="/pages/contact-us" class="nav-link">Contact Us</a>
+      <a href="/pages/faq" class="nav-link">FAQ</a>
     </nav>
     
     <div class="header-icons">
-      <a href="/search" class="icon-link search-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <a href="/search" class="icon-link search-icon" aria-label="Search">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </a>
-      <a href="/account" class="icon-link account-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <a href="/account" class="icon-link account-icon" aria-label="Account">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
       </a>
-      <a href="/cart" class="icon-link cart-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <a href="/cart" class="icon-link cart-icon" aria-label="Cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="9" cy="21" r="1"></circle>
           <circle cx="20" cy="21" r="1"></circle>
           <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
         </svg>
         <span class="cart-count">{{ cart.item_count }}</span>
       </a>
+      <button class="mobile-menu-toggle" aria-label="Menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
     </div>
+  </div>
+  
+  <div class="mobile-nav">
+    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/collections/all" class="mobile-nav-link">All Sofas</a>
+    <a href="/collections/armchairs" class="mobile-nav-link">Armchairs</a>
+    <a href="/collections/sofa-bed" class="mobile-nav-link">Sofa Bed</a>
+    <a href="/collections/3-seater" class="mobile-nav-link">3 Seater</a>
+    <a href="/collections/2-seaters" class="mobile-nav-link">2 Seaters</a>
+    <a href="/collections/corner-sofas" class="mobile-nav-link">Corner Sofas</a>
+    <a href="/collections" class="mobile-nav-link">Collections</a>
+    <a href="/pages/about-us" class="mobile-nav-link">About Us</a>
+    <a href="/pages/contact-us" class="mobile-nav-link">Contact Us</a>
+    <a href="/pages/faq" class="mobile-nav-link">FAQ</a>
   </div>
 </header>
 
 <style>
   .site-header {
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #ddd;
-    padding: 1rem 0;
-    sticky: top;
+    background-color: #ffffff;
+    border-bottom: 2px solid #e8e8e8;
+    padding: 1.25rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
   
   .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+  }
+  
+  .logo-section a {
+    text-decoration: none;
+    display: block;
   }
   
   .logo {
     max-width: 200px;
     height: auto;
+    display: block;
+  }
+  
+  .shop-name {
+    font-size: 1.75rem;
+    color: #2c3e50;
+    margin: 0;
+    font-weight: 700;
   }
   
   .main-nav {
     display: flex;
+    align-items: center;
     gap: 2rem;
   }
   
@@ -88,7 +153,11 @@
     text-decoration: none;
     color: #333;
     font-weight: 500;
+    font-size: 0.95rem;
     transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
   
   .nav-link:hover,
@@ -96,8 +165,60 @@
     color: {{ settings.color_primary }};
   }
   
+  .nav-dropdown {
+    position: relative;
+  }
+  
+  .dropdown-trigger svg {
+    transition: transform 0.3s;
+  }
+  
+  .nav-dropdown:hover .dropdown-trigger svg {
+    transform: rotate(180deg);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    min-width: 220px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dropdown-item {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: {{ settings.color_primary }};
+    border-left-color: {{ settings.color_primary }};
+  }
+  
   .header-icons {
     display: flex;
+    align-items: center;
     gap: 1.5rem;
   }
   
@@ -107,6 +228,11 @@
     color: #333;
     text-decoration: none;
     position: relative;
+    transition: color 0.3s;
+  }
+  
+  .icon-link:hover {
+    color: {{ settings.color_primary }};
   }
   
   .cart-count {
@@ -121,7 +247,91 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
   }
+  
+  .mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    padding: 0.5rem;
+  }
+  
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: #ffffff;
+    border-top: 1px solid #e8e8e8;
+    padding: 1rem 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mobile-nav.active {
+    display: flex;
+  }
+  
+  .mobile-nav-link {
+    padding: 0.75rem 2rem;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+  }
+  
+  .mobile-nav-link:hover {
+    background-color: #f8f9fa;
+    color: {{ settings.color_primary }};
+  }
+  
+  @media (max-width: 968px) {
+    .main-nav {
+      display: none;
+    }
+    
+    .mobile-menu-toggle {
+      display: block;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header-icons {
+      gap: 1rem;
+    }
+    
+    .logo {
+      max-width: 150px;
+    }
+    
+    .shop-name {
+      font-size: 1.5rem;
+    }
+  }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileNav = document.querySelector('.mobile-nav');
+    
+    if (mobileMenuToggle) {
+      mobileMenuToggle.addEventListener('click', function() {
+        mobileNav.classList.toggle('active');
+      });
+    }
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.header-container') && mobileNav.classList.contains('active')) {
+        mobileNav.classList.remove('active');
+      }
+    });
+  });
+</script>

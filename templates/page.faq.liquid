@@ -1,0 +1,162 @@
+<div class="page-template faq-page">
+  <div class="container">
+    <h1 class="page-title">{{ page.title }}</h1>
+    <div class="faq-content">
+      {{ page.content }}
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is your delivery policy?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>We offer delivery and assembly services. Free delivery on orders over £500. Delivery typically takes 2-4 weeks. We also offer cash on collection for your convenience.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you offer assembly services?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! We provide professional assembly services. Our team will deliver and assemble your furniture at your location.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What payment methods do you accept?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>We accept all major credit cards, debit cards, PayPal, and cash on collection.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What is your return policy?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>We offer a 30-day return policy on unused items in original packaging. Please contact us for return authorization.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How can I track my order?</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+          <div class="faq-answer">
+            <p>Once your order ships, you'll receive a tracking number via email. You can also contact us via WhatsApp or email for order updates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .faq-page {
+    padding: 3rem 0;
+  }
+  
+  .faq-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .faq-list {
+    margin-top: 3rem;
+  }
+  
+  .faq-item {
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 0;
+  }
+  
+  .faq-question {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .faq-question:hover {
+    color: {{ settings.color_primary }};
+  }
+  
+  .faq-question svg {
+    transition: transform 0.3s;
+    flex-shrink: 0;
+    margin-left: 1rem;
+  }
+  
+  .faq-item.active .faq-question svg {
+    transform: rotate(180deg);
+  }
+  
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0;
+  }
+  
+  .faq-item.active .faq-answer {
+    max-height: 500px;
+    padding-bottom: 1.5rem;
+  }
+  
+  .faq-answer p {
+    color: #666;
+    line-height: 1.8;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .faq-question {
+      font-size: 1rem;
+      padding: 1.25rem 0;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', function() {
+      const faqItem = this.parentElement;
+      const isActive = faqItem.classList.contains('active');
+      
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      if (!isActive) {
+        faqItem.classList.add('active');
+      }
+    });
+  });
+</script>

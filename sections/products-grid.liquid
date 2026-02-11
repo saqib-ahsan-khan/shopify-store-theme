@@ -12,41 +12,84 @@
         { "value": "36", "label": "36" }
       ],
       "default": "12"
+    },
+    {
+      "type": "select",
+      "id": "default_sort",
+      "label": "Default Sort Order",
+      "options": [
+        { "value": "manual", "label": "Featured" },
+        { "value": "title-ascending", "label": "Alphabetically, A-Z" },
+        { "value": "title-descending", "label": "Alphabetically, Z-A" },
+        { "value": "price-ascending", "label": "Price, Low to High" },
+        { "value": "price-descending", "label": "Price, High to Low" }
+      ],
+      "default": "title-ascending",
+      "info": "Default sort order for products (alphabetical by default)"
     }
   ]
 }
 {% endschema %}
 
 <div class="collection-header">
-  <h1>{{ collection.title }}</h1>
+  <h1>{{ collection.title | default: 'All Products' }}</h1>
   {% if collection.description %}
     <div class="collection-description">{{ collection.description }}</div>
   {% endif %}
 </div>
 
 <div class="products-container">
-  {% if collection.products_count > 0 %}
-    <div class="products-grid">
-      {% paginate collection.products by section.settings.products_per_page %}
-        {% for product in collection.products %}
-          {% include 'product-card' %}
-        {% endfor %}
-      {% endpaginate %}
-    </div>
+  {% if collection.products_count > 0 or collections.all.products_count > 0 %}
+    {% assign products_to_show = collection.products | default: collections.all.products %}
+    {% assign sorted_products = products_to_show | sort: 'title' %}
     
-    <div class="pagination">
-      {% if paginate.previous %}
-        <a href="{{ paginate.previous.url }}" class="btn btn-secondary">Previous</a>
-      {% endif %}
+    {% paginate sorted_products by section.settings.products_per_page %}
+      <div class="products-grid">
+        {% for product in sorted_products %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
       
-      <span class="page-numbers">
-        Page {{ paginate.current_page }} of {{ paginate.pages }}
-      </span>
-      
-      {% if paginate.next %}
-        <a href="{{ paginate.next.url }}" class="btn btn-secondary">Next</a>
+      {% if paginate.pages > 1 %}
+        <div class="pagination">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" class="pagination-btn pagination-prev">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+              Previous
+            </a>
+          {% endif %}
+          
+          <div class="pagination-numbers">
+            {% for part in paginate.parts %}
+              {% if part.is_link %}
+                <a href="{{ part.url }}" class="pagination-number">{{ part.title }}</a>
+              {% else %}
+                {% if part.title == '&hellip;' %}
+                  <span class="pagination-ellipsis">{{ part.title }}</span>
+                {% else %}
+                  <span class="pagination-number active">{{ part.title }}</span>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" class="pagination-btn pagination-next">
+              Next
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+        
+        <div class="pagination-info">
+          <p>Showing {{ paginate.current_offset | plus: 1 }}-{{ paginate.current_offset | plus: paginate.page_size }} of {{ paginate.items }} products</p>
+        </div>
       {% endif %}
-    </div>
+    {% endpaginate %}
   {% else %}
     <p class="no-products">No products found in this collection.</p>
   {% endif %}
@@ -56,13 +99,21 @@
   .collection-header {
     margin-bottom: 2rem;
     padding-bottom: 2rem;
-    border-bottom: 2px solid #ddd;
+    border-bottom: 2px solid #e8e8e8;
+  }
+  
+  .collection-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
   }
   
   .collection-description {
     font-size: 1.1rem;
     color: #666;
     margin-top: 0.5rem;
+    line-height: 1.8;
   }
   
   .products-container {
@@ -71,9 +122,9 @@
   
   .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
   }
   
   .pagination {
@@ -81,25 +132,99 @@
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    margin-top: 2rem;
-    padding: 1rem;
+    margin: 3rem 0 1rem;
+    flex-wrap: wrap;
   }
   
-  .page-numbers {
+  .pagination-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: {{ settings.color_primary }};
+    border: 2px solid {{ settings.color_primary }};
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .pagination-btn:hover {
+    background: {{ settings.color_primary }};
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  .pagination-numbers {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  
+  .pagination-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.5rem;
+    background: white;
+    color: #333;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .pagination-number:hover {
+    border-color: {{ settings.color_primary }};
+    color: {{ settings.color_primary }};
+  }
+  
+  .pagination-number.active {
+    background: {{ settings.color_primary }};
+    color: white;
+    border-color: {{ settings.color_primary }};
+  }
+  
+  .pagination-ellipsis {
+    padding: 0 0.5rem;
+    color: #999;
+  }
+  
+  .pagination-info {
+    text-align: center;
     color: #666;
-    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
   }
   
   .no-products {
     text-align: center;
-    padding: 3rem;
+    padding: 4rem 2rem;
     color: #999;
+    font-size: 1.1rem;
   }
   
   @media (max-width: 768px) {
+    .collection-header h1 {
+      font-size: 2rem;
+    }
+    
     .products-grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .pagination {
+      flex-direction: column;
+    }
+    
+    .pagination-numbers {
+      flex-wrap: wrap;
+      justify-content: center;
     }
   }
 </style>

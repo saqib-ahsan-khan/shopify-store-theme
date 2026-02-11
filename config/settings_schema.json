@@ -49,6 +49,32 @@
         "id": "shop_description",
         "label": "Shop Description",
         "default": "<p>Handcrafted luxury sofas and furniture for your home</p>"
+      },
+      {
+        "type": "header",
+        "content": "Social Media & Contact"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "WhatsApp Number",
+        "default": "+1234567890",
+        "info": "Include country code (e.g., +44 for UK)"
+      },
+      {
+        "type": "url",
+        "id": "facebook_url",
+        "label": "Facebook URL"
+      },
+      {
+        "type": "url",
+        "id": "instagram_url",
+        "label": "Instagram URL"
+      },
+      {
+        "type": "url",
+        "id": "tiktok_url",
+        "label": "TikTok URL"
       }
     ]
   }
