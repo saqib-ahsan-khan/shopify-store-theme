@@ -1,0 +1,13 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_primary": "#8B4513",
+      "color_secondary": "#D2691E",
+      "font_body": "helvetica_neue_n4_w01-45sf93",
+      "font_heading": "georgia_pro_w01_smbd",
+      "shop_name": "Premium Sofas Co.",
+      "shop_description": "Handcrafted luxury sofas and furniture for your home"
+    }
+  }
+}

@@ -1,0 +1,45 @@
+<div class="container search-page">
+  <h1>Search Results for "{{ search.terms | escape }}"</h1>
+  
+  {% if search.results.size > 0 %}
+    <div class="search-results">
+      <p class="result-count">Found {{ search.results.size }} result{{ search.results.size | pluralize }}</p>
+      
+      <div class="products-grid">
+        {% for result in search.results %}
+          {% if result.object_type == 'product' %}
+            {% include 'product-card', product: result %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% else %}
+    <div class="no-results">
+      <p>No results found for "{{ search.terms | escape }}"</p>
+      <p><a href="/">Continue shopping</a></p>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .search-page {
+    padding: 2rem;
+  }
+  
+  .result-count {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+  }
+</style>
