@@ -11,19 +11,35 @@
   "sections": {
     "hero": {
       "type": "hero-section",
-      "settings": {}
+      "settings": {
+        "hero_image": "shopify://shop_images/sofa-hero-image.png",
+        "hero_title": "Premium Sofas for Your Home",
+        "hero_subtitle": "<p>Handcrafted luxury sofas with premium comfort</p>",
+        "button_text": "Shop Now",
+        "button_url": ""
+      }
     },
     "featured-products": {
       "type": "featured-products",
-      "settings": {}
+      "settings": {
+        "title": "Featured Sofas",
+        "collection": "",
+        "products_count": 6
+      }
     },
     "sale-section": {
       "type": "sale-section",
-      "settings": {}
+      "settings": {
+        "title": "On Sale Now",
+        "sale_collection": "",
+        "products_count": 6
+      }
     },
     "collections-showcase": {
       "type": "collections-showcase",
-      "settings": {}
+      "settings": {
+        "title": "Shop by Category"
+      }
     }
   },
   "order": [
