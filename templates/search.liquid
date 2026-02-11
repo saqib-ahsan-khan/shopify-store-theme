@@ -1,45 +1,198 @@
-<div class="container search-page">
-  <h1>Search Results for "{{ search.terms | escape }}"</h1>
-  
-  {% if search.results.size > 0 %}
-    <div class="search-results">
-      <p class="result-count">Found {{ search.results.size }} result{{ search.results.size | pluralize }}</p>
-      
-      <div class="products-grid">
-        {% for result in search.results %}
-          {% if result.object_type == 'product' %}
-            {% include 'product-card', product: result %}
-          {% endif %}
-        {% endfor %}
+<div class="search-page">
+  <div class="container">
+    <div class="search-header">
+      <h1>Search Results</h1>
+      {% if search.performed %}
+        <p class="search-query">Searching for: <strong>"{{ search.terms | escape }}"</strong></p>
+      {% endif %}
+    </div>
+    
+    {% if search.performed %}
+      {% if search.results.size > 0 %}
+        <div class="search-results">
+          <p class="result-count">Found {{ search.results.size }} result{{ search.results.size | pluralize }}</p>
+          
+          <div class="products-grid">
+            {% for result in search.results %}
+              {% if result.object_type == 'product' %}
+                {% render 'product-card', product: result %}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% else %}
+        <div class="no-results">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #adb5bd; margin-bottom: 1rem;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <h2>No results found</h2>
+          <p>We couldn't find any products matching "{{ search.terms | escape }}"</p>
+          <div class="search-suggestions">
+            <p><strong>Try:</strong></p>
+            <ul>
+              <li>Checking your spelling</li>
+              <li>Using fewer or different keywords</li>
+              <li>Browsing our <a href="/collections">collections</a></li>
+            </ul>
+          </div>
+          <a href="/" class="btn btn-primary">Continue Shopping</a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="search-prompt">
+        <p>Use the search bar above to find products</p>
+        <a href="/collections" class="btn btn-primary">Browse All Collections</a>
       </div>
-    </div>
-  {% else %}
-    <div class="no-results">
-      <p>No results found for "{{ search.terms | escape }}"</p>
-      <p><a href="/">Continue shopping</a></p>
-    </div>
-  {% endif %}
+    {% endif %}
+  </div>
 </div>
 
 <style>
   .search-page {
-    padding: 2rem;
+    padding: 3rem 0;
+    min-height: 60vh;
+  }
+  
+  .search-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .search-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a365d;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search-query {
+    color: #666;
+    font-size: 1.1rem;
   }
   
   .result-count {
     color: #666;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
   }
   
   .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
   }
   
   .no-results {
     text-align: center;
-    padding: 3rem;
+    padding: 4rem 2rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .no-results h2 {
+    font-size: 2rem;
+    color: #1a365d;
+    margin-bottom: 1rem;
+  }
+  
+  .no-results p {
+    color: #666;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .search-suggestions {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    text-align: left;
+    display: inline-block;
+  }
+  
+  .search-suggestions p {
+    margin-bottom: 0.75rem;
+    color: #333;
+  }
+  
+  .search-suggestions ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .search-suggestions li {
+    padding: 0.5rem 0;
+    color: #666;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  
+  .search-suggestions li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #f59e0b;
+    font-weight: bold;
+  }
+  
+  .search-suggestions a {
+    color: #1a365d;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .search-suggestions a:hover {
+    text-decoration: underline;
+  }
+  
+  .search-prompt {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  
+  .search-prompt p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  
+  .btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: #1a365d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .btn-primary {
+    background: #1a365d;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #2c5282;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(26, 54, 93, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .search-page {
+      padding: 2rem 0;
+    }
+    
+    .search-header h1 {
+      font-size: 2rem;
+    }
+    
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+    }
   }
 </style>

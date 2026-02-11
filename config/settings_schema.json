@@ -10,13 +10,13 @@
         "type": "color",
         "id": "color_primary",
         "label": "Primary Color",
-        "default": "#8B4513"
+        "default": "#1a365d"
       },
       {
         "type": "color",
         "id": "color_secondary",
         "label": "Secondary Color",
-        "default": "#D2691E"
+        "default": "#f59e0b"
       },
       {
         "type": "header",

@@ -62,12 +62,25 @@
     </nav>
     
     <div class="header-icons">
-      <a href="/search" class="icon-link search-icon" aria-label="Search">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.35-4.35"></path>
-        </svg>
-      </a>
+      <div class="search-wrapper">
+        <button class="icon-link search-icon" id="search-toggle" aria-label="Search" type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <div class="search-dropdown" id="search-dropdown">
+          <form action="/search" method="get" class="search-form">
+            <input type="search" name="q" placeholder="Search products..." class="search-input" id="search-input" autocomplete="off" value="{{ search.terms | escape }}">
+            <button type="submit" class="search-submit" aria-label="Submit search">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
       <a href="/account" class="icon-link account-icon" aria-label="Account">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -235,6 +248,70 @@
     color: {{ settings.color_primary }};
   }
   
+  .search-wrapper {
+    position: relative;
+  }
+  
+  .search-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem;
+    min-width: 300px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .search-wrapper.active .search-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .search-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .search-input:focus {
+    border-color: {{ settings.color_primary }};
+  }
+  
+  .search-submit {
+    padding: 0.75rem;
+    background: {{ settings.color_primary }};
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+  }
+  
+  .search-submit:hover {
+    background: {{ settings.color_secondary }};
+  }
+  
   .cart-count {
     position: absolute;
     top: -8px;
@@ -313,6 +390,13 @@
     .shop-name {
       font-size: 1.5rem;
     }
+    
+    .search-dropdown {
+      right: -10px;
+      left: -10px;
+      min-width: auto;
+      width: calc(100vw - 40px);
+    }
   }
 </style>
 
@@ -320,10 +404,39 @@
   document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const mobileNav = document.querySelector('.mobile-nav');
+    const searchToggle = document.getElementById('search-toggle');
+    const searchWrapper = document.querySelector('.search-wrapper');
+    const searchDropdown = document.getElementById('search-dropdown');
+    const searchInput = document.getElementById('search-input');
     
     if (mobileMenuToggle) {
       mobileMenuToggle.addEventListener('click', function() {
         mobileNav.classList.toggle('active');
+      });
+    }
+    
+    // Search dropdown functionality
+    if (searchToggle && searchWrapper) {
+      searchToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        searchWrapper.classList.toggle('active');
+        if (searchWrapper.classList.contains('active') && searchInput) {
+          setTimeout(() => searchInput.focus(), 100);
+        }
+      });
+      
+      // Close search when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.search-wrapper')) {
+          searchWrapper.classList.remove('active');
+        }
+      });
+      
+      // Close search on escape key
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && searchWrapper.classList.contains('active')) {
+          searchWrapper.classList.remove('active');
+        }
       });
     }
     
