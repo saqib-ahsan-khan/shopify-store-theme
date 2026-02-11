@@ -1,5 +1,56 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "current": "Default",
+  "current": {
+    "color_primary": "#8B4513",
+    "color_secondary": "#D2691E",
+    "font_body": "helvetica_neue_n4_w01-45sf93",
+    "font_heading": "georgia_pro_w01_smbd",
+    "shop_name": "Premium Sofas Co.",
+    "shop_description": "Handcrafted luxury sofas and furniture for your home",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement": true
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "shop_name": "Premium Sofas Co.",
+          "whatsapp_number": "+1234567890"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "whatsapp_number": "+1234567890",
+          "facebook_url": "",
+          "instagram_url": "",
+          "tiktok_url": "",
+          "newsletter_title": "Subscribe to Our Newsletter",
+          "newsletter_subtitle": "Get 10% off your first order"
+        }
+      },
+      "whatsapp-widget": {
+        "type": "whatsapp-widget",
+        "settings": {
+          "show_widget": true,
+          "whatsapp_number": "+44 7471 138215",
+          "widget_text": "Need Help? Chat with us!"
+        }
+      }
+    },
+    "content_for_index": []
+  },
   "presets": {
     "Default": {
       "color_primary": "#8B4513",
