@@ -29,6 +29,7 @@
     },
     "sale-section": {
       "type": "sale-section",
+      "disabled": true,
       "settings": {
         "title": "On Sale Now",
         "sale_collection": "",
